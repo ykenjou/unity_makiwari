@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - FireWood
+  - NotFireWood
+  - GameManager
+  - Axe
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Background
+  - 
+  - Chara
+  - 
+  - 
+  - 
+  - 
+  - Object
+  - 
+  - 
+  - 
+  - 
+  - ScoreUI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Back
+    uniqueID: 611311427
+    locked: 0
+  - name: Object
+    uniqueID: 297924973
+    locked: 0
+  - name: Chara
+    uniqueID: 2131132395
+    locked: 0
+  - name: Front
+    uniqueID: 3954973021
+    locked: 0
+  - name: UI
+    uniqueID: 3826633083
+    locked: 0
