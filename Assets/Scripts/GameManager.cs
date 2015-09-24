@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 	public Transform fireWoodR;
 	public Transform fireWoodL;
 	public Transform can;
+	public Transform canR;
+	public Transform canL;
 	public int score;
 	public string gameMode;
 	public bool gameOver;
@@ -17,6 +19,8 @@ public class GameManager : MonoBehaviour {
 	public float normalDestroyInterval;
 	public Text scoreTxt;
 	public Text assistantMessage;
+	public Text gameOverTxt;
+	public Text missTxt;
 	public Button startBtn;
 	public Button restartBtn;
 	public Canvas UIcanvas;
@@ -40,7 +44,9 @@ public class GameManager : MonoBehaviour {
 		objectSetInterval = 0.0f;
 		score = 0;
 		scoreTxt.text = score.ToString();
-		HideRestartBtn ();
+		setBtnBool ("RestartBtn", false);
+		setBtnBool ("RestartBtn", false);
+		gameOverTxt.text = "";
 	}
 	
 	// Update is called once per frame
@@ -60,13 +66,13 @@ public class GameManager : MonoBehaviour {
 
 				if (objectSetInterval > normalRepopInterval) {
 
-					setAssistantMessage();
+					DoCoroutine("messageEnum");
 
 					float objectRandom = Random.Range (0.0f, 10.0f);
 					if (objectRandom < 6.5f) {
-						LoadFireWood ();
+						LoadObject(firewood);
 					} else {
-						LoadCan ();
+						LoadObject(can);
 					}
 					objectSetInterval = 0.0f;
 				}
@@ -75,55 +81,24 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void GameOverFunc(){
-		assistantMessage.text = "a-a...";
-		gameOver = true;
-		ShowRestartBtn ();
-	}
-
-	public void GameStartFunc(){
-		StartCoroutine("StartEffect");
+		StartCoroutine("gameOverEnum");
 	}
 
 	public void GameRestartFunc(){
-		HideRestartBtn ();
+		setBtnBool ("RestartBtn", false);
 		score = 0;
 		gameOver = false;
 		assistantMessage.text = "come on!";
+		missTxt.text = "";
+		gameOverTxt.text = "";
 		objectSetInterval = 0.0f;
 	}
 
-	public void HideStartBtn(){
+	public void setBtnBool(string btnName, bool btnBool){
 		foreach (Transform child in UIcanvas.transform){
-			if(child.name == "StartBtn"){
+			if(child.name == btnName){
 				Button button1 = child.gameObject.GetComponent<Button>();
-				button1.gameObject.SetActive (false);
-			}
-		}
-	}
-
-	public void ShowStartBtn(){
-		foreach (Transform child in UIcanvas.transform){
-			if(child.name == "StartBtn"){
-				Button button1 = child.gameObject.GetComponent<Button>();
-				button1.gameObject.SetActive (true);
-			}
-		}
-	}
-
-	public void HideRestartBtn(){
-		foreach (Transform child in UIcanvas.transform){
-			if(child.name == "RestartBtn"){
-				Button button1 = child.gameObject.GetComponent<Button>();
-				button1.gameObject.SetActive (false);
-			}
-		}
-	}
-
-	public void ShowRestartBtn(){
-		foreach (Transform child in UIcanvas.transform){
-			if(child.name == "RestartBtn"){
-				Button button1 = child.gameObject.GetComponent<Button>();
-				button1.gameObject.SetActive (true);
+				button1.gameObject.SetActive (btnBool);
 			}
 		}
 	}
@@ -139,43 +114,46 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void DoCoroutine(string IenumName){
+		StartCoroutine(IenumName);
+	}
+
+	public IEnumerator gameOverEnum(){
+		Time.timeScale = 0.6f;
+		gameOver = true;
+		assistantMessage.text = "";
+		missTxt.text = "miss!";
+		yield return new WaitForSeconds(0.7f);
+		Time.timeScale = 1.0f;
+		gameOverTxt.text = "Game Over!";
+		yield return new WaitForSeconds(1.0f);
+		setBtnBool ("RestartBtn", true);
+	}
+
 	private IEnumerator messageEnum(){
 		RandomMessage ();
 		yield return new WaitForSeconds(0.7f);
 		assistantMessage.text = "";
 	}
 
-	
-	private void setAssistantMessage(){
-		StartCoroutine("messageEnum");
-	}
-
 	private IEnumerator StartEffect(){
-		HideStartBtn ();
-		yield return new WaitForSeconds(0.7f);
+		setBtnBool ("StartBtn", false);
+		yield return new WaitForSeconds(0.6f);
 		assistantMessage.text = "let's go!";
-		yield return new WaitForSeconds(0.7f);
+		yield return new WaitForSeconds(0.6f);
 		gameStart = true;
 	}
 
-
-	private void LoadFireWood(){
-		Vector3 fireWoodPosition = new Vector3 (0.0f, -1.3f, 0.0f);
-		Instantiate (firewood, fireWoodPosition, Quaternion.identity);
+	public void LoadObject(Transform loadObject){
+		Vector3 position = new Vector3 (0.0f, -1.3f, 0.0f);
+		Instantiate (loadObject, position, Quaternion.identity);
 	}
 
-	public void LoadFireWoodLR(){
-		Vector3 fireWoodPositionR = new Vector3 (0.6f, -0.6f, 0.0f);
-		Instantiate (fireWoodR, fireWoodPositionR, Quaternion.identity);
-		Vector3 fireWoodPositionL = new Vector3 (-0.6f, -0.6f, 0.0f);
-		Instantiate (fireWoodL, fireWoodPositionL, Quaternion.identity);
+	public void LoadLRObject(Transform L,Transform R){
+		Vector3  positionR = new Vector3 (0.6f, -0.6f, 0.0f);
+		Instantiate (R, positionR, Quaternion.identity);
+		Vector3 positionL = new Vector3 (-0.6f, -0.6f, 0.0f);
+		Instantiate (L, positionL, Quaternion.identity);
 	}
-
-	public void LoadFireWoodL(){
-	}
-
-	private void LoadCan(){
-		Vector3 canPosition = new Vector3 (0.0f, -1.3f, 0.0f);
-		Instantiate (can, canPosition, Quaternion.identity);
-	}
+	
 }

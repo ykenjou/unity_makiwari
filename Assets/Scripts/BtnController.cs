@@ -16,7 +16,7 @@ public class BtnController : MonoBehaviour {
 	}
 
 	public void StartClick(){
-		gameManager.GameStartFunc ();
+		gameManager.DoCoroutine ("StartEffect");
 	}
 
 	public void RestartClick(){

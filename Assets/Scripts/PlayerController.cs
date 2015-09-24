@@ -34,12 +34,18 @@ public class PlayerController : MonoBehaviour {
 		if (other.tag == "FireWood") {
 			Destroy(other.gameObject);
 			gameManager.score += 1;
-			gameManager.LoadFireWoodLR();
+			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
 		}
 
 		if (other.tag == "NotFireWood") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
+		}
+
+		if (other.tag == "Can") {
+			Destroy(other.gameObject);
+			gameManager.GameOverFunc();
+			gameManager.LoadLRObject(gameManager.canL,gameManager.canR);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class NotFirewoodController : MonoBehaviour {
@@ -25,6 +25,17 @@ public class NotFirewoodController : MonoBehaviour {
 			if(fwExistedInterval > gameManager.normalDestroyInterval){
 				Destroy(this.gameObject);
 			}
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D other){
+		if (other.tag == "Axe") {
+			/*
+			if(this.tag == "Can"){
+				Destroy(this.gameObject);
+				gameManager.GameOverFunc();
+			}
+			*/
 		}
 	}
 }
