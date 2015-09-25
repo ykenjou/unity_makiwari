@@ -12,6 +12,12 @@ public class GameManager : MonoBehaviour {
 	public Transform can;
 	public Transform canR;
 	public Transform canL;
+	public Transform redCan;
+	public Transform redCanR;
+	public Transform redCanL;
+	public Transform groud;
+	public Transform groudL;
+	public Transform groudR;
 	public int score;
 	public string gameMode;
 	public bool gameOver;
@@ -28,6 +34,8 @@ public class GameManager : MonoBehaviour {
 	private float objectSetInterval;
 	private float normalRepopInterval;
 	private float cutWaitInterval;
+	private int prevNfRandom = 0;
+	Transform[] nfArray;
 
 	public static GameManager GetController() {
 		return GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManager>();
@@ -47,6 +55,10 @@ public class GameManager : MonoBehaviour {
 		setBtnBool ("RestartBtn", false);
 		setBtnBool ("RestartBtn", false);
 		gameOverTxt.text = "";
+		nfArray = new Transform [3];
+		nfArray [0] = can;
+		nfArray [1] = redCan;
+		nfArray [2] = groud;
 	}
 	
 	// Update is called once per frame
@@ -72,7 +84,16 @@ public class GameManager : MonoBehaviour {
 					if (objectRandom < 6.5f) {
 						LoadObject(firewood);
 					} else {
-						LoadObject(can);
+						while(true){
+							int notFirewoodRandom = Random.Range(0,3);
+							if(notFirewoodRandom == prevNfRandom){
+							} else {
+								prevNfRandom = notFirewoodRandom;
+								LoadObject(nfArray[notFirewoodRandom]);
+								break;
+							}
+						}
+
 					}
 					objectSetInterval = 0.0f;
 				}
@@ -81,6 +102,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void GameOverFunc(){
+		System.GC.Collect ();
 		StartCoroutine("gameOverEnum");
 	}
 
@@ -122,7 +144,6 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = 0.6f;
 		gameOver = true;
 		assistantMessage.text = "";
-		missTxt.text = "miss!";
 		yield return new WaitForSeconds(0.7f);
 		Time.timeScale = 1.0f;
 		gameOverTxt.text = "Game Over!";

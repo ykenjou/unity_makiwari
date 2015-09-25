@@ -25,6 +25,7 @@ public class FirewoodController : MonoBehaviour {
 			if(fwExistedInterval > gameManager.normalDestroyInterval){
 				Destroy(this.gameObject);
 				gameManager.GameOverFunc();
+				gameManager.missTxt.text = "time over!";
 			}
 		}
 	}

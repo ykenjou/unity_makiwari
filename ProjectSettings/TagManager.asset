@@ -9,6 +9,8 @@ TagManager:
   - GameManager
   - Axe
   - Can
+  - Groud
+  - RedCan
   layers:
   - Default
   - TransparentFX
