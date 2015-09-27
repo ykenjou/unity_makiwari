@@ -15,14 +15,10 @@ public class NotFirewoodController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		
-		if (gameManager.gameMode == "easy") {
-		}
-		
-		
 		if (!gameManager.gameOver) {
 			fwExistedInterval += Time.deltaTime;
-			if(fwExistedInterval > gameManager.normalDestroyInterval){
+			if(fwExistedInterval > gameManager.objectDestroyInv){
+				//gameManager.DoCoroutine("galleryMsEnum");
 				Destroy(this.gameObject);
 			}
 		}

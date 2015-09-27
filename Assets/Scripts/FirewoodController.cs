@@ -15,17 +15,12 @@ public class FirewoodController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-
-		if (gameManager.gameMode == "easy") {
-		}
-
-
 		if (!gameManager.gameOver) {
 			fwExistedInterval += Time.deltaTime;
-			if(fwExistedInterval > gameManager.normalDestroyInterval){
+			if(fwExistedInterval > gameManager.objectDestroyInv && gameManager.nfDesFlg){
 				Destroy(this.gameObject);
 				gameManager.GameOverFunc();
-				gameManager.missTxt.text = "time over!";
+				gameManager.missTxt.text = "時間切れ〜！";
 			}
 		}
 	}

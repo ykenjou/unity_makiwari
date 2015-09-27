@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class BtnController : MonoBehaviour {
 
 	GameManager gameManager;
@@ -21,5 +22,22 @@ public class BtnController : MonoBehaviour {
 
 	public void RestartClick(){
 		gameManager.GameRestartFunc ();
+	}
+
+	public void EasyBtnClick(){
+		gameManager.setGameMode("easy");
+	}
+
+	public void noralBtnClick(){
+		gameManager.setGameMode("normal");
+	}
+
+	public void hardBtnClick(){
+		gameManager.setGameMode("hard");
+	}
+
+	public void reselectBtnClick(){
+		gameManager.showDifficultyBtn ();
+		gameManager.GameDataResetFunc ();
 	}
 }

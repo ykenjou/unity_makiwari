@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
 	public Transform player;
 	public Transform Axe;
+
 	public Transform firewood;
 	public Transform fireWoodR;
 	public Transform fireWoodL;
@@ -18,24 +20,44 @@ public class GameManager : MonoBehaviour {
 	public Transform groud;
 	public Transform groudL;
 	public Transform groudR;
-	public int score;
+
+	public bool nfDesFlg;
+
 	public string gameMode;
 	public bool gameOver;
 	public bool gameStart;
-	public float normalDestroyInterval;
+	
+	public int score;
 	public Text scoreTxt;
 	public Text assistantMessage;
 	public Text gameOverTxt;
 	public Text missTxt;
+	public Text gameModeTxt;
+	public Text galleryTxt;
+
 	public Button startBtn;
 	public Button restartBtn;
+
 	public Canvas UIcanvas;
 
+	public float objectRepopInv;
+	public float objectDestroyInv;
 	private float objectSetInterval;
-	private float normalRepopInterval;
-	private float cutWaitInterval;
+
 	private int prevNfRandom = 0;
-	Transform[] nfArray;
+	private List<Transform> nfList = new List<Transform>();
+	private Transform[] easyNfArray;
+	private Transform[] normalNfArray;
+	private Transform[] hardNfArray;
+	private int listNum;
+
+	private float easyRepopInv = 1.3f;
+	private float easyDestroyInv = 1.0f;
+	private float normalRepopInv = 1.1f;
+	private float normalDestroyInv = 0.8f;
+	private float hardRepopInv = 0.9f;
+	private float hardDestroyInv = 0.6f;
+	private float fwPoint;
 
 	public static GameManager GetController() {
 		return GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManager>();
@@ -53,43 +75,40 @@ public class GameManager : MonoBehaviour {
 		score = 0;
 		scoreTxt.text = score.ToString();
 		setBtnBool ("RestartBtn", false);
-		setBtnBool ("RestartBtn", false);
+		setBtnBool ("ReSelectButton", false);
 		gameOverTxt.text = "";
-		nfArray = new Transform [3];
-		nfArray [0] = can;
-		nfArray [1] = redCan;
-		nfArray [2] = groud;
+		easyNfArray = new Transform [2]{can,groud};
+		normalNfArray = new Transform [3]{can,redCan,groud};
+		hardNfArray = new Transform [3]{can,redCan,groud};
+		setBtnBool ("StartBtn", false);
+		nfDesFlg = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		scoreTxt.text = score.ToString ();
 		
 		if (gameStart) {
 
-			scoreTxt.text = score.ToString ();
-
-			if (gameMode == "easy") {
-				normalRepopInterval = 1.0f;
-				normalDestroyInterval = 0.7f;
-			}
 
 			if (!gameOver) {
 				objectSetInterval += Time.deltaTime;
 
-				if (objectSetInterval > normalRepopInterval) {
+				if (objectSetInterval > objectRepopInv) {
 
 					DoCoroutine("messageEnum");
 
 					float objectRandom = Random.Range (0.0f, 10.0f);
-					if (objectRandom < 6.5f) {
+					if (objectRandom < fwPoint) {
 						LoadObject(firewood);
 					} else {
 						while(true){
-							int notFirewoodRandom = Random.Range(0,3);
-							if(notFirewoodRandom == prevNfRandom){
+							int nfRandom = Random.Range(0,listNum);
+							if(nfRandom == prevNfRandom){
 							} else {
-								prevNfRandom = notFirewoodRandom;
-								LoadObject(nfArray[notFirewoodRandom]);
+								prevNfRandom = nfRandom;
+								LoadObject(nfList[nfRandom]);
 								break;
 							}
 						}
@@ -108,12 +127,49 @@ public class GameManager : MonoBehaviour {
 
 	public void GameRestartFunc(){
 		setBtnBool ("RestartBtn", false);
+		setBtnBool ("ReSelectButton", false);
 		score = 0;
 		gameOver = false;
-		assistantMessage.text = "come on!";
+		assistantMessage.text = "よっしゃー！";
 		missTxt.text = "";
 		gameOverTxt.text = "";
 		objectSetInterval = 0.0f;
+		nfDesFlg = true;
+	}
+
+	public void GameDataResetFunc(){
+		missTxt.text = "";
+		gameOverTxt.text = "";
+		objectSetInterval = 0.0f;
+		score = 0;
+		gameOver = false;
+		gameStart = false;
+	}
+
+	public void setGameMode(string mode){
+		gameMode = mode;
+		gameModeTxt.text = mode;
+		nfList.Clear();
+		if(mode == "easy"){
+			objectRepopInv = easyRepopInv;
+			objectDestroyInv = easyDestroyInv;
+			nfList.AddRange(easyNfArray);
+			listNum = nfList.Count;
+			fwPoint = 7.0f;
+		} else if(mode == "normal"){
+			objectRepopInv = normalRepopInv;
+			objectDestroyInv = normalDestroyInv;
+			nfList.AddRange(normalNfArray);
+			listNum = nfList.Count;
+			fwPoint = 6.5f;
+		} else if(mode == "hard"){
+			objectRepopInv = hardRepopInv;
+			objectDestroyInv = hardDestroyInv;
+			nfList.AddRange(hardNfArray);
+			listNum = nfList.Count;
+			fwPoint = 6.0f;
+		}
+		DoCoroutine ("StartEffect");
 	}
 
 	public void setBtnBool(string btnName, bool btnBool){
@@ -125,14 +181,39 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void showDifficultyBtn(){
+		setBtnBool ("EasyButton",  true);
+		setBtnBool ("NormalButton", true);
+		setBtnBool ("HardButton", true);
+		setBtnBool ("RestartBtn", false);
+		setBtnBool ("ReSelectButton", false);
+	}
+
+	public void hideDifficultyBtn(){
+		setBtnBool ("EasyButton",  false);
+		setBtnBool ("NormalButton", false);
+		setBtnBool ("HardButton", false);
+	}
+
 	private void RandomMessage(){
 		float messageRandom = Random.Range (0.0f,10.0f);
 		if (messageRandom < 3.3f) {
-			assistantMessage.text = "yo!";
+			assistantMessage.text = "よっ！";
 		} else if (messageRandom < 6.6f) {
-			assistantMessage.text = "ha!";
+			assistantMessage.text = "はっ！";
 		} else {
-			assistantMessage.text = "se!";
+			assistantMessage.text = "せいっ！";
+		}
+	}
+
+	private void galleryRdmMs(){
+		float messageRandom = Random.Range (0.0f,10.0f);
+		if (messageRandom < 3.3f) {
+			galleryTxt.text = "お〜";
+		} else if (messageRandom < 6.6f) {
+			galleryTxt.text = "いいね！";
+		} else {
+			galleryTxt.text = "やる〜！";
 		}
 	}
 
@@ -149,18 +230,26 @@ public class GameManager : MonoBehaviour {
 		gameOverTxt.text = "Game Over!";
 		yield return new WaitForSeconds(1.0f);
 		setBtnBool ("RestartBtn", true);
+		setBtnBool ("ReSelectButton", true);
 	}
 
 	private IEnumerator messageEnum(){
 		RandomMessage ();
-		yield return new WaitForSeconds(0.7f);
+		yield return new WaitForSeconds(objectDestroyInv);
 		assistantMessage.text = "";
 	}
 
+	private IEnumerator galleryMsEnum(){
+		galleryRdmMs ();
+		yield return new WaitForSeconds(0.3f);
+		galleryTxt.text = "";
+	}
+
 	private IEnumerator StartEffect(){
+		hideDifficultyBtn ();
 		setBtnBool ("StartBtn", false);
 		yield return new WaitForSeconds(0.6f);
-		assistantMessage.text = "let's go!";
+		assistantMessage.text = "いくよ〜！";
 		yield return new WaitForSeconds(0.6f);
 		gameStart = true;
 	}

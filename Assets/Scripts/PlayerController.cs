@@ -45,22 +45,32 @@ public class PlayerController : MonoBehaviour {
 		if (other.tag == "Can") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
-			gameManager.missTxt.text = "miss!";
+			gameManager.missTxt.text = "ぶっぶ〜！";
 			gameManager.LoadLRObject(gameManager.canL,gameManager.canR);
 		}
 
 		if (other.tag == "RedCan") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
-			gameManager.missTxt.text = "miss!";
+			gameManager.missTxt.text = "ぶっぶ〜！";
 			gameManager.LoadLRObject(gameManager.redCanL,gameManager.redCanR);
 		}
 
 		if (other.tag == "Groud") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
-			gameManager.missTxt.text = "miss!";
+			gameManager.missTxt.text = "ぶっぶ〜！";
 			gameManager.LoadLRObject(gameManager.groudL,gameManager.groudR);
 		}
 	}
+
+	public void DesFalse(){
+		gameManager.nfDesFlg = false;
+	}
+
+	public void DesTrue(){
+		gameManager.nfDesFlg = true;
+	}
+
+
 }
