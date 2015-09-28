@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 		if (!gameManager.gameOver && gameManager.gameStart) {
 			if (Input.GetMouseButtonDown(0)) {
 				animator.SetTrigger("Down_Up");
+				DesFalse();
 			}
 		}
 	}

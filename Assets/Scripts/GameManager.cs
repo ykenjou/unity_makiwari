@@ -8,6 +8,11 @@ public class GameManager : MonoBehaviour {
 	public Transform player;
 	public Transform Axe;
 
+	public Transform assistant;
+	[System.NonSerialized] public Animator assistantAnim;
+	[System.NonSerialized] public Sprite assinstantSprite;
+	AssistantCtrl assistantCtrl;
+
 	public Transform firewood;
 	public Transform fireWoodR;
 	public Transform fireWoodL;
@@ -43,6 +48,7 @@ public class GameManager : MonoBehaviour {
 	public float objectRepopInv;
 	public float objectDestroyInv;
 	private float objectSetInterval;
+	private float animStartInv;
 
 	private int prevNfRandom = 0;
 	private List<Transform> nfList = new List<Transform>();
@@ -51,10 +57,10 @@ public class GameManager : MonoBehaviour {
 	private Transform[] hardNfArray;
 	private int listNum;
 
-	private float easyRepopInv = 1.3f;
-	private float easyDestroyInv = 1.0f;
-	private float normalRepopInv = 1.1f;
-	private float normalDestroyInv = 0.8f;
+	private float easyRepopInv = 1.1f;
+	private float easyDestroyInv = 0.8f;
+	private float normalRepopInv = 1.0f;
+	private float normalDestroyInv = 0.7f;
 	private float hardRepopInv = 0.9f;
 	private float hardDestroyInv = 0.6f;
 	private float fwPoint;
@@ -68,7 +74,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		System.GC.Collect ();
 		Application.targetFrameRate = 60;
-		gameMode = "easy";
+		gameMode = "";
 		gameStart = false;
 		gameOver = false;
 		objectSetInterval = 0.0f;
@@ -82,6 +88,8 @@ public class GameManager : MonoBehaviour {
 		hardNfArray = new Transform [3]{can,redCan,groud};
 		setBtnBool ("StartBtn", false);
 		nfDesFlg = true;
+		assistantAnim = assistant.GetComponent <Animator> ();
+		assistantCtrl = AssistantCtrl.GetController ();
 	}
 	
 	// Update is called once per frame
@@ -98,6 +106,7 @@ public class GameManager : MonoBehaviour {
 				if (objectSetInterval > objectRepopInv) {
 
 					DoCoroutine("messageEnum");
+					DoCoroutine("setGetEnum");
 
 					float objectRandom = Random.Range (0.0f, 10.0f);
 					if (objectRandom < fwPoint) {
@@ -115,13 +124,16 @@ public class GameManager : MonoBehaviour {
 
 					}
 					objectSetInterval = 0.0f;
+
 				}
 			}
 		}
 	}
 
+
 	public void GameOverFunc(){
 		System.GC.Collect ();
+		assistantCtrl.changeFailureSprite();
 		StartCoroutine("gameOverEnum");
 	}
 
@@ -131,6 +143,7 @@ public class GameManager : MonoBehaviour {
 		score = 0;
 		gameOver = false;
 		assistantMessage.text = "よっしゃー！";
+		assistantCtrl.changeGoSprite ();
 		missTxt.text = "";
 		gameOverTxt.text = "";
 		objectSetInterval = 0.0f;
@@ -144,6 +157,7 @@ public class GameManager : MonoBehaviour {
 		score = 0;
 		gameOver = false;
 		gameStart = false;
+		assistantCtrl.changeIdleSprite ();
 	}
 
 	public void setGameMode(string mode){
@@ -222,8 +236,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public IEnumerator gameOverEnum(){
-		Time.timeScale = 0.6f;
 		gameOver = true;
+		Time.timeScale = 0.6f;
 		assistantMessage.text = "";
 		yield return new WaitForSeconds(0.7f);
 		Time.timeScale = 1.0f;
@@ -249,9 +263,18 @@ public class GameManager : MonoBehaviour {
 		hideDifficultyBtn ();
 		setBtnBool ("StartBtn", false);
 		yield return new WaitForSeconds(0.6f);
+		assistantCtrl.changeGoSprite ();
 		assistantMessage.text = "いくよ〜！";
 		yield return new WaitForSeconds(0.6f);
 		gameStart = true;
+	}
+
+	private IEnumerator setGetEnum(){
+		assistantCtrl.changeSetSprite ();
+		yield return new WaitForSeconds(objectDestroyInv);
+		if (!gameOver) {
+			assistantCtrl.changeGetSprite ();
+		}
 	}
 
 	public void LoadObject(Transform loadObject){
