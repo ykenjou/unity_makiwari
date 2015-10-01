@@ -63,6 +63,48 @@ public class PlayerController : MonoBehaviour {
 			gameManager.missTxt.text = "ぶっぶ〜！";
 			gameManager.LoadLRObject(gameManager.groudL,gameManager.groudR);
 		}
+
+		if (other.tag == "Apple") {
+			Destroy(other.gameObject);
+			gameManager.GameOverFunc();
+			gameManager.missTxt.text = "ぶっぶ〜！";
+		}
+
+		if (other.tag == "Pear") {
+			Destroy(other.gameObject);
+			gameManager.GameOverFunc();
+			gameManager.missTxt.text = "ぶっぶ〜！";
+		}
+
+		if (other.tag == "Chestnut") {
+			Destroy(other.gameObject);
+			gameManager.GameOverFunc();
+			gameManager.missTxt.text = "ぶっぶ〜！";
+		}
+
+		if (other.tag == "Acorn") {
+			Destroy(other.gameObject);
+			gameManager.GameOverFunc();
+			gameManager.missTxt.text = "ぶっぶ〜！";
+		}
+
+		if (other.tag == "Grapes_g") {
+			Destroy(other.gameObject);
+			gameManager.GameOverFunc();
+			gameManager.missTxt.text = "ぶっぶ〜！";
+		}
+
+		if (other.tag == "Grapes_p") {
+			Destroy(other.gameObject);
+			gameManager.GameOverFunc();
+			gameManager.missTxt.text = "ぶっぶ〜！";
+		}
+
+		if (other.tag == "Persimmon") {
+			Destroy(other.gameObject);
+			gameManager.GameOverFunc();
+			gameManager.missTxt.text = "ぶっぶ〜！";
+		}
 	}
 
 	public void DesFalse(){

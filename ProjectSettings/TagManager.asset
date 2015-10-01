@@ -12,6 +12,13 @@ TagManager:
   - Groud
   - RedCan
   - Assistant
+  - Apple
+  - Pear
+  - Chestnut
+  - Grapes_g
+  - Grapes_p
+  - Acorn
+  - Persimmon
   layers:
   - Default
   - TransparentFX

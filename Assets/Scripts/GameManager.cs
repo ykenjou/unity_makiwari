@@ -25,6 +25,13 @@ public class GameManager : MonoBehaviour {
 	public Transform groud;
 	public Transform groudL;
 	public Transform groudR;
+	public Transform apple;
+	public Transform pear;
+	public Transform chestnut;
+	public Transform grapes_g;
+	public Transform grapes_p;
+	public Transform acorn;
+	public Transform persimmon;
 
 	public bool nfDesFlg;
 
@@ -57,8 +64,8 @@ public class GameManager : MonoBehaviour {
 	private Transform[] hardNfArray;
 	private int listNum;
 
-	private float easyRepopInv = 1.1f;
-	private float easyDestroyInv = 0.8f;
+	private float easyRepopInv = 1.12f;
+	private float easyDestroyInv = 0.9f;
 	private float normalRepopInv = 1.0f;
 	private float normalDestroyInv = 0.7f;
 	private float hardRepopInv = 0.9f;
@@ -83,9 +90,9 @@ public class GameManager : MonoBehaviour {
 		setBtnBool ("RestartBtn", false);
 		setBtnBool ("ReSelectButton", false);
 		gameOverTxt.text = "";
-		easyNfArray = new Transform [2]{can,groud};
-		normalNfArray = new Transform [3]{can,redCan,groud};
-		hardNfArray = new Transform [3]{can,redCan,groud};
+		easyNfArray = new Transform [3]{apple,pear,acorn};
+		normalNfArray = new Transform [4]{apple,pear,chestnut,grapes_g};
+		hardNfArray = new Transform [5]{apple,pear,chestnut,persimmon,grapes_g};
 		setBtnBool ("StartBtn", false);
 		nfDesFlg = true;
 		assistantAnim = assistant.GetComponent <Animator> ();
@@ -274,18 +281,20 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds(objectDestroyInv);
 		if (!gameOver) {
 			assistantCtrl.changeGetSprite ();
+			yield return new WaitForSeconds(0.15f);
+			assistantCtrl.changeGet2Sprite ();
 		}
 	}
 
 	public void LoadObject(Transform loadObject){
-		Vector3 position = new Vector3 (0.0f, -1.3f, 0.0f);
+		Vector3 position = new Vector3 (0.0f, -1.5f, 0.0f);
 		Instantiate (loadObject, position, Quaternion.identity);
 	}
 
 	public void LoadLRObject(Transform L,Transform R){
-		Vector3  positionR = new Vector3 (0.6f, -0.6f, 0.0f);
+		Vector3  positionR = new Vector3 (0.6f, -0.9f, 0.0f);
 		Instantiate (R, positionR, Quaternion.identity);
-		Vector3 positionL = new Vector3 (-0.6f, -0.6f, 0.0f);
+		Vector3 positionL = new Vector3 (-0.6f, -0.9f, 0.0f);
 		Instantiate (L, positionL, Quaternion.identity);
 	}
 	

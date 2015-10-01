@@ -8,6 +8,7 @@ public class AssistantCtrl : MonoBehaviour {
 	public Sprite goSprite;
 	public Sprite setSprite;
 	public Sprite getSprite;
+	public Sprite get2Sprite;
 	public Sprite failureSprite;
 
 	public static AssistantCtrl GetController() {
@@ -38,6 +39,10 @@ public class AssistantCtrl : MonoBehaviour {
 
 	public void changeGetSprite(){
 		spriteRenderer.sprite = getSprite;
+	}
+
+	public void changeGet2Sprite(){
+		spriteRenderer.sprite = get2Sprite;
 	}
 
 	public void changeFailureSprite(){
