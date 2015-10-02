@@ -36,6 +36,10 @@ public class BtnController : MonoBehaviour {
 		gameManager.setGameMode("hard");
 	}
 
+	public void veryHardBtnClick(){
+		gameManager.setGameMode("veryHard");
+	}
+
 	public void reselectBtnClick(){
 		gameManager.showDifficultyBtn ();
 		gameManager.GameDataResetFunc ();

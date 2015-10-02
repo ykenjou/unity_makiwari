@@ -19,6 +19,12 @@ TagManager:
   - Grapes_p
   - Acorn
   - Persimmon
+  - FwPear
+  - FwChesnut
+  - FwAcorn
+  - FwGrapeG
+  - FwGrapeP
+  - FwPersimmon
   layers:
   - Default
   - TransparentFX

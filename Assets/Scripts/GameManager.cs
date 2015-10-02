@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour {
 	public Transform firewood;
 	public Transform fireWoodR;
 	public Transform fireWoodL;
+
+
 	public Transform can;
 	public Transform canR;
 	public Transform canL;
@@ -25,6 +27,7 @@ public class GameManager : MonoBehaviour {
 	public Transform groud;
 	public Transform groudL;
 	public Transform groudR;
+
 	public Transform apple;
 	public Transform pear;
 	public Transform chestnut;
@@ -32,6 +35,14 @@ public class GameManager : MonoBehaviour {
 	public Transform grapes_p;
 	public Transform acorn;
 	public Transform persimmon;
+	
+	public Transform fwApple;
+	public Transform fwPear;
+	public Transform fwChesnut;
+	public Transform fwAcorn;
+	public Transform fwGrapeG;
+	public Transform fwGrapeP;
+	public Transform fwPersimmon;
 
 	public bool nfDesFlg;
 
@@ -62,7 +73,15 @@ public class GameManager : MonoBehaviour {
 	private Transform[] easyNfArray;
 	private Transform[] normalNfArray;
 	private Transform[] hardNfArray;
+	private Transform[] veryHardNfArray;
 	private int listNum;
+
+	private List<Transform> fwList = new List<Transform> ();
+	private Transform[] easyFwArray;
+	private Transform[] normalFwArray;
+	private Transform[] hardFwArray;
+	private Transform[] veryHardFwArray;
+	private int fwListNum;
 
 	private float easyRepopInv = 1.12f;
 	private float easyDestroyInv = 0.9f;
@@ -70,6 +89,8 @@ public class GameManager : MonoBehaviour {
 	private float normalDestroyInv = 0.7f;
 	private float hardRepopInv = 0.9f;
 	private float hardDestroyInv = 0.6f;
+	private float veryHardRepopInv = 0.85f;
+	private float veryHardDestroyInv = 0.55f;
 	private float fwPoint;
 
 	public static GameManager GetController() {
@@ -90,13 +111,22 @@ public class GameManager : MonoBehaviour {
 		setBtnBool ("RestartBtn", false);
 		setBtnBool ("ReSelectButton", false);
 		gameOverTxt.text = "";
+
 		easyNfArray = new Transform [3]{apple,pear,acorn};
 		normalNfArray = new Transform [4]{apple,pear,chestnut,grapes_g};
-		hardNfArray = new Transform [5]{apple,pear,chestnut,persimmon,grapes_g};
+		hardNfArray = new Transform [5]{apple,pear,chestnut,persimmon,grapes_p};
+		veryHardNfArray = new Transform[7]{apple,pear,acorn,chestnut,persimmon,grapes_g,grapes_p};
+
+		easyFwArray = new Transform [3]{fwApple,fwPear,fwAcorn};
+		normalFwArray = new Transform [4]{fwApple,fwPear,fwChesnut,fwGrapeG};
+		hardFwArray = new Transform [5]{fwApple,fwPear,fwChesnut,fwPersimmon,fwGrapeP};
+		veryHardFwArray = new Transform[7]{fwApple,fwPear,fwAcorn,fwChesnut,fwPersimmon,fwGrapeG,fwGrapeP};
+
 		setBtnBool ("StartBtn", false);
 		nfDesFlg = true;
 		assistantAnim = assistant.GetComponent <Animator> ();
 		assistantCtrl = AssistantCtrl.GetController ();
+
 	}
 	
 	// Update is called once per frame
@@ -117,7 +147,9 @@ public class GameManager : MonoBehaviour {
 
 					float objectRandom = Random.Range (0.0f, 10.0f);
 					if (objectRandom < fwPoint) {
-						LoadObject(firewood);
+						//LoadObject(firewood);
+						int fwRandom = Random.Range(0,fwListNum);
+						LoadObject(fwList[fwRandom]);
 					} else {
 						while(true){
 							int nfRandom = Random.Range(0,listNum);
@@ -171,24 +203,48 @@ public class GameManager : MonoBehaviour {
 		gameMode = mode;
 		gameModeTxt.text = mode;
 		nfList.Clear();
-		if(mode == "easy"){
+		fwList.Clear();
+		if (mode == "easy") {
 			objectRepopInv = easyRepopInv;
 			objectDestroyInv = easyDestroyInv;
-			nfList.AddRange(easyNfArray);
+			nfList.AddRange (easyNfArray);
 			listNum = nfList.Count;
 			fwPoint = 7.0f;
-		} else if(mode == "normal"){
+			Shuffle (easyFwArray);
+			for (int i = 0; i < 1; i++) {
+				fwList.Add (easyFwArray [i]);
+			}
+			fwListNum = fwList.Count;
+		} else if (mode == "normal") {
 			objectRepopInv = normalRepopInv;
 			objectDestroyInv = normalDestroyInv;
-			nfList.AddRange(normalNfArray);
+			nfList.AddRange (normalNfArray);
 			listNum = nfList.Count;
 			fwPoint = 6.5f;
-		} else if(mode == "hard"){
+			Shuffle (normalFwArray);
+			for (int i = 0; i < 2; i++) {
+				fwList.Add (normalFwArray [i]);
+			}
+			fwListNum = fwList.Count;
+		} else if (mode == "hard") {
 			objectRepopInv = hardRepopInv;
 			objectDestroyInv = hardDestroyInv;
-			nfList.AddRange(hardNfArray);
+			nfList.AddRange (hardNfArray);
 			listNum = nfList.Count;
 			fwPoint = 6.0f;
+			Shuffle (hardFwArray);
+			for (int i = 0; i < 3; i++) {
+				fwList.Add (hardFwArray [i]);
+			}
+			fwListNum = fwList.Count;
+		} else if (mode == "veryHard") {
+			objectRepopInv = veryHardRepopInv;
+			objectDestroyInv = veryHardDestroyInv;
+			nfList.AddRange (veryHardNfArray);
+			listNum = nfList.Count;
+			fwPoint = 5.9f;
+			fwList.AddRange(veryHardFwArray);
+			fwListNum = fwList.Count;
 		}
 		DoCoroutine ("StartEffect");
 	}
@@ -206,6 +262,7 @@ public class GameManager : MonoBehaviour {
 		setBtnBool ("EasyButton",  true);
 		setBtnBool ("NormalButton", true);
 		setBtnBool ("HardButton", true);
+		setBtnBool ("VeryHardButton", true);
 		setBtnBool ("RestartBtn", false);
 		setBtnBool ("ReSelectButton", false);
 	}
@@ -214,6 +271,7 @@ public class GameManager : MonoBehaviour {
 		setBtnBool ("EasyButton",  false);
 		setBtnBool ("NormalButton", false);
 		setBtnBool ("HardButton", false);
+		setBtnBool ("VeryHardButton", false);
 	}
 
 	private void RandomMessage(){
@@ -297,5 +355,14 @@ public class GameManager : MonoBehaviour {
 		Vector3 positionL = new Vector3 (-0.6f, -0.9f, 0.0f);
 		Instantiate (L, positionL, Quaternion.identity);
 	}
-	
+
+	void Shuffle (Transform[] deck) {
+		for (int i = 0; i < deck.Length; i++) {
+			Transform temp = deck[i];
+			int randomIndex = Random.Range(0, deck.Length);
+			deck[i] = deck[randomIndex];
+			deck[randomIndex] = temp;
+		}
+	}
+
 }

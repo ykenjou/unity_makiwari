@@ -38,9 +38,46 @@ public class PlayerController : MonoBehaviour {
 			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
 		}
 
-		if (other.tag == "NotFireWood") {
+		if (other.tag == "FwApple") {
 			Destroy(other.gameObject);
-			gameManager.GameOverFunc();
+			gameManager.score += 1;
+			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
+		}
+
+		if (other.tag == "FwPear") {
+			Destroy(other.gameObject);
+			gameManager.score += 1;
+			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
+		}
+
+		if (other.tag == "FwChesnut") {
+			Destroy(other.gameObject);
+			gameManager.score += 1;
+			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
+		}
+
+		if (other.tag == "FwAcorn") {
+			Destroy(other.gameObject);
+			gameManager.score += 1;
+			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
+		}
+
+		if (other.tag == "FwGrapeG") {
+			Destroy(other.gameObject);
+			gameManager.score += 1;
+			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
+		}
+
+		if (other.tag == "FwGrapeP") {
+			Destroy(other.gameObject);
+			gameManager.score += 1;
+			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
+		}
+
+		if (other.tag == "FwPersimmon") {
+			Destroy(other.gameObject);
+			gameManager.score += 1;
+			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
 		}
 
 		if (other.tag == "Can") {
