@@ -6,6 +6,10 @@ public class PlayerController : MonoBehaviour {
 	[System.NonSerialized] public Animator animator;
 	GameManager gameManager;
 
+	public static PlayerController GetController() {
+		return GameObject.FindGameObjectWithTag ("Assistant").GetComponent<PlayerController>();
+	}
+
 	// Use this for initialization
 	void Start () {
 		animator = GetComponent <Animator>();
@@ -25,7 +29,7 @@ public class PlayerController : MonoBehaviour {
 
 		if (!gameManager.gameOver && gameManager.gameStart) {
 			if (Input.GetMouseButtonDown(0)) {
-				animator.SetTrigger("Down_Up");
+				animator.SetTrigger("AxeDown");
 				DesFalse();
 			}
 		}
@@ -41,7 +45,7 @@ public class PlayerController : MonoBehaviour {
 		if (other.tag == "FwApple") {
 			Destroy(other.gameObject);
 			gameManager.score += 1;
-			gameManager.LoadLRObject(gameManager.fireWoodL,gameManager.fireWoodR);
+			gameManager.LoadLRObject(gameManager.fwAppleLeft,gameManager.fwAppleRight);
 		}
 
 		if (other.tag == "FwPear") {
@@ -84,63 +88,67 @@ public class PlayerController : MonoBehaviour {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
-			gameManager.LoadLRObject(gameManager.canL,gameManager.canR);
 		}
 
 		if (other.tag == "RedCan") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
-			gameManager.LoadLRObject(gameManager.redCanL,gameManager.redCanR);
 		}
 
 		if (other.tag == "Groud") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
-			gameManager.LoadLRObject(gameManager.groudL,gameManager.groudR);
 		}
 
 		if (other.tag == "Apple") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
+			gameManager.LoadLRObject(gameManager.appleLeft,gameManager.appleRight);
 		}
 
 		if (other.tag == "Pear") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
+			gameManager.LoadLRObject(gameManager.appleLeft,gameManager.appleRight);
 		}
 
 		if (other.tag == "Chestnut") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
+			gameManager.LoadLRObject(gameManager.appleLeft,gameManager.appleRight);
 		}
 
 		if (other.tag == "Acorn") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
+			gameManager.LoadLRObject(gameManager.appleLeft,gameManager.appleRight);
 		}
 
 		if (other.tag == "Grapes_g") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
+			gameManager.LoadLRObject(gameManager.appleLeft,gameManager.appleRight);
 		}
 
 		if (other.tag == "Grapes_p") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
+			gameManager.LoadLRObject(gameManager.appleLeft,gameManager.appleRight);
 		}
 
 		if (other.tag == "Persimmon") {
 			Destroy(other.gameObject);
 			gameManager.GameOverFunc();
 			gameManager.missTxt.text = "ぶっぶ〜！";
+			gameManager.LoadLRObject(gameManager.appleLeft,gameManager.appleRight);
 		}
 	}
 

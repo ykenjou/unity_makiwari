@@ -6,27 +6,18 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour {
 
 	public Transform player;
+	public Animator playerAnim;
 	public Transform Axe;
 
 	public Transform assistant;
 	[System.NonSerialized] public Animator assistantAnim;
 	[System.NonSerialized] public Sprite assinstantSprite;
 	AssistantCtrl assistantCtrl;
+	PlayerController playerCtrl;
 
 	public Transform firewood;
 	public Transform fireWoodR;
 	public Transform fireWoodL;
-
-
-	public Transform can;
-	public Transform canR;
-	public Transform canL;
-	public Transform redCan;
-	public Transform redCanR;
-	public Transform redCanL;
-	public Transform groud;
-	public Transform groudL;
-	public Transform groudR;
 
 	public Transform apple;
 	public Transform pear;
@@ -35,7 +26,10 @@ public class GameManager : MonoBehaviour {
 	public Transform grapes_p;
 	public Transform acorn;
 	public Transform persimmon;
-	
+
+	public Transform appleRight;
+	public Transform appleLeft;
+
 	public Transform fwApple;
 	public Transform fwPear;
 	public Transform fwChesnut;
@@ -43,6 +37,9 @@ public class GameManager : MonoBehaviour {
 	public Transform fwGrapeG;
 	public Transform fwGrapeP;
 	public Transform fwPersimmon;
+
+	public Transform fwAppleRight;
+	public Transform fwAppleLeft;
 
 	public bool nfDesFlg;
 
@@ -75,6 +72,7 @@ public class GameManager : MonoBehaviour {
 	private Transform[] hardNfArray;
 	private Transform[] veryHardNfArray;
 	private int listNum;
+	public int nfCount;
 
 	private List<Transform> fwList = new List<Transform> ();
 	private Transform[] easyFwArray;
@@ -116,6 +114,7 @@ public class GameManager : MonoBehaviour {
 		normalNfArray = new Transform [4]{apple,pear,chestnut,grapes_g};
 		hardNfArray = new Transform [5]{apple,pear,chestnut,persimmon,grapes_p};
 		veryHardNfArray = new Transform[7]{apple,pear,acorn,chestnut,persimmon,grapes_g,grapes_p};
+		nfCount = 0;
 
 		easyFwArray = new Transform [3]{fwApple,fwPear,fwAcorn};
 		normalFwArray = new Transform [4]{fwApple,fwPear,fwChesnut,fwGrapeG};
@@ -126,7 +125,8 @@ public class GameManager : MonoBehaviour {
 		nfDesFlg = true;
 		assistantAnim = assistant.GetComponent <Animator> ();
 		assistantCtrl = AssistantCtrl.GetController ();
-
+		playerAnim = player.GetComponent<Animator> ();
+		//Screen.orientation = ScreenOrientation.AutoRotation;
 	}
 	
 	// Update is called once per frame
@@ -147,18 +147,25 @@ public class GameManager : MonoBehaviour {
 
 					float objectRandom = Random.Range (0.0f, 10.0f);
 					if (objectRandom < fwPoint) {
-						//LoadObject(firewood);
 						int fwRandom = Random.Range(0,fwListNum);
 						LoadObject(fwList[fwRandom]);
+						nfCount = 0;
 					} else {
-						while(true){
-							int nfRandom = Random.Range(0,listNum);
-							if(nfRandom == prevNfRandom){
-							} else {
-								prevNfRandom = nfRandom;
-								LoadObject(nfList[nfRandom]);
-								break;
+						nfCount++;
+						if(nfCount < 4){
+							while(true){
+								int nfRandom = Random.Range(0,listNum);
+								if(nfRandom == prevNfRandom){
+								} else {
+									prevNfRandom = nfRandom;
+									LoadObject(nfList[nfRandom]);
+									break;
+								}
 							}
+						} else {
+							int fwRandom = Random.Range(0,fwListNum);
+							LoadObject(fwList[fwRandom]);
+							nfCount = 0;
 						}
 
 					}
@@ -174,6 +181,7 @@ public class GameManager : MonoBehaviour {
 		System.GC.Collect ();
 		assistantCtrl.changeFailureSprite();
 		StartCoroutine("gameOverEnum");
+		playerAnim.SetTrigger ("GameOver");
 	}
 
 	public void GameRestartFunc(){
@@ -181,12 +189,14 @@ public class GameManager : MonoBehaviour {
 		setBtnBool ("ReSelectButton", false);
 		score = 0;
 		gameOver = false;
+		playerAnim.SetTrigger ("Idle");
 		assistantMessage.text = "よっしゃー！";
 		assistantCtrl.changeGoSprite ();
 		missTxt.text = "";
 		gameOverTxt.text = "";
 		objectSetInterval = 0.0f;
 		nfDesFlg = true;
+		nfCount = 0;
 	}
 
 	public void GameDataResetFunc(){
@@ -204,6 +214,8 @@ public class GameManager : MonoBehaviour {
 		gameModeTxt.text = mode;
 		nfList.Clear();
 		fwList.Clear();
+		nfCount = 0;
+		playerAnim.SetTrigger ("Idle");
 		if (mode == "easy") {
 			objectRepopInv = easyRepopInv;
 			objectDestroyInv = easyDestroyInv;
