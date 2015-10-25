@@ -25,6 +25,7 @@ TagManager:
   - FwGrapeG
   - FwGrapeP
   - FwPersimmon
+  - ObjectCtrl
   layers:
   - Default
   - TransparentFX

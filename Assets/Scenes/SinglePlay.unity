@@ -449,6 +449,7 @@ MonoBehaviour:
   playerAnim: {fileID: 0}
   Axe: {fileID: 0}
   assistant: {fileID: 871273307}
+  hitEffect: {fileID: 493710, guid: 264d0cb40e94b4878a1e22a1539de82a, type: 2}
   firewood: {fileID: 424488, guid: 8c614b44e1d7141d083f2c68e39e01cd, type: 2}
   fireWoodR: {fileID: 484884, guid: 68f6a772f69ea4dea854d6dd02e61783, type: 2}
   fireWoodL: {fileID: 435674, guid: af74ca314bdb2487ca37058453bf36f6, type: 2}
@@ -531,7 +532,7 @@ RectTransform:
   m_RootOrder: 5
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 0, y: 250}
+  m_AnchoredPosition: {x: 0, y: 400}
   m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &334882010
@@ -1328,6 +1329,47 @@ MonoBehaviour:
   getSprite: {fileID: 21300000, guid: 5e81f0d4e7cb846238b29a057afce4b3, type: 3}
   get2Sprite: {fileID: 21300000, guid: 90bc364f5682249579880bf1fa4d1a21, type: 3}
   failureSprite: {fileID: 21300000, guid: e1ece9b34418640659bc665b24678888, type: 3}
+--- !u!1 &932175946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 932175948}
+  - 182: {fileID: 932175947}
+  m_Layer: 0
+  m_Name: WindZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!182 &932175947
+WindZone:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 932175946}
+  m_Enabled: 1
+  m_Mode: 0
+  m_Radius: 20
+  m_WindMain: 1
+  m_WindTurbulence: 1
+  m_WindPulseMagnitude: .5
+  m_WindPulseFrequency: .00999999978
+--- !u!4 &932175948
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 932175946}
+  m_LocalRotation: {x: 0, y: -.707106829, z: 0, w: .707106709}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
 --- !u!1 &939055899
 GameObject:
   m_ObjectHideFlags: 0
@@ -1432,7 +1474,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 0, y: 446}
+  m_AnchoredPosition: {x: 0, y: 250}
   m_SizeDelta: {x: 300, y: 120}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1008618195
@@ -1608,7 +1650,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 750, y: 1340}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -1749,6 +1791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e6c2f024b83f45cc92ac5812e91c9b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEffect: {fileID: 493710, guid: 264d0cb40e94b4878a1e22a1539de82a, type: 2}
 --- !u!50 &1355324651
 Rigidbody2D:
   serializedVersion: 2
@@ -1778,6 +1821,65 @@ CircleCollider2D:
   m_Offset: {x: .5, y: .899999976}
   serializedVersion: 2
   m_Radius: .600000024
+--- !u!1 &1357725957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1357725959}
+  - 114: {fileID: 1357725958}
+  m_Layer: 0
+  m_Name: ObjectCtrl
+  m_TagString: ObjectCtrl
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1357725958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1357725957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb409965294e44f9aa75232a2c694713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireWoodR: {fileID: 0}
+  fireWoodL: {fileID: 0}
+  apple: {fileID: 0}
+  pear: {fileID: 0}
+  chestnut: {fileID: 0}
+  grapes_g: {fileID: 0}
+  grapes_p: {fileID: 0}
+  acorn: {fileID: 0}
+  persimmon: {fileID: 0}
+  appleRight: {fileID: 0}
+  appleLeft: {fileID: 0}
+  fwApple: {fileID: 0}
+  fwPear: {fileID: 0}
+  fwChesnut: {fileID: 0}
+  fwAcorn: {fileID: 0}
+  fwGrapeG: {fileID: 0}
+  fwGrapeP: {fileID: 0}
+  fwPersimmon: {fileID: 0}
+  fwAppleRight: {fileID: 0}
+  fwAppleLeft: {fileID: 0}
+--- !u!4 &1357725959
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1357725957}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: .632362485, y: .658687413, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
 --- !u!1 &1359001486
 GameObject:
   m_ObjectHideFlags: 0

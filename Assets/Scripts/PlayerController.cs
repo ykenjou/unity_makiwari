@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 	
 	[System.NonSerialized] public Animator animator;
 	GameManager gameManager;
+	public Transform hitEffect;
 
 	public static PlayerController GetController() {
 		return GameObject.FindGameObjectWithTag ("Assistant").GetComponent<PlayerController>();
@@ -31,6 +32,11 @@ public class PlayerController : MonoBehaviour {
 			if (Input.GetMouseButtonDown(0)) {
 				animator.SetTrigger("AxeDown");
 				DesFalse();
+
+				Vector3 clickPosition;
+				clickPosition = Input.mousePosition;
+				clickPosition.z = 10f;
+				Instantiate(hitEffect,Camera.main.ScreenToWorldPoint(clickPosition),Quaternion.identity);
 			}
 		}
 	}

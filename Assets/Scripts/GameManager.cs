@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour {
 	AssistantCtrl assistantCtrl;
 	PlayerController playerCtrl;
 
+	public Transform hitEffect;
+
 	public Transform firewood;
 	public Transform fireWoodR;
 	public Transform fireWoodL;
@@ -181,7 +183,7 @@ public class GameManager : MonoBehaviour {
 		System.GC.Collect ();
 		assistantCtrl.changeFailureSprite();
 		StartCoroutine("gameOverEnum");
-		playerAnim.SetTrigger ("GameOver");
+		playerAnim.SetBool ("GameOver",true);
 	}
 
 	public void GameRestartFunc(){
@@ -189,7 +191,7 @@ public class GameManager : MonoBehaviour {
 		setBtnBool ("ReSelectButton", false);
 		score = 0;
 		gameOver = false;
-		playerAnim.SetTrigger ("Idle");
+		playerAnim.SetBool ("GameOver",false);
 		assistantMessage.text = "よっしゃー！";
 		assistantCtrl.changeGoSprite ();
 		missTxt.text = "";
